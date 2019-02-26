@@ -1,0 +1,18 @@
+version: '1.0'
+steps:
+  get_tag:
+    title: Getting image tag...
+    image: frolvlad/alpine-bash ##image for commands to run on
+    commands:
+      - >
+        if [ "${CF_BRANCH_TAG_NORMALIZED}" = "master" ]; then
+          cf_export TAG=latest
+        else
+          cf_export TAG=${CF_BRANCH_TAG_NORMALIZED} ## cf_export allows you to export variables across steps. here we exporting variable 'TAG'
+        fi
+
+  build:
+    title: Building image...
+    type: build
+    image_name: cloudsql-mysql-ci
+    tag: ${{TAG}}
