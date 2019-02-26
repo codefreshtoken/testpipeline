@@ -1,8 +1,5 @@
 FROM ubuntu:18.04
 
-WORKDIR /app
-COPY credentials /app
-
 #install mysql client
 RUN apt-get update \
     && apt-get install -y --no-install-recommends mysql-client \
@@ -24,9 +21,3 @@ RUN mkdir -p /usr/local/gcloud \
 
 # Adding the package path to local
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
-
-# Add gcloud authentication
-RUN gcloud auth activate-service-account --key-file=./dockerbuildusersakey.json
-RUN gcloud config set project circlesmarket-wip-231711
-RUN gcloud components install docker-credential-gcr --quiet
-RUN gcloud auth configure-docker --quiet
